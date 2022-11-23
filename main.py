@@ -57,7 +57,6 @@ while True:
             key.close()
 
         print("Chave pública criada com sucesso. Para consultá-la, verifique o arquivo key.txt")
-        print(f"Valor de E: {e}")
 
     elif option == 2:
         msg = str(input("Digite a mensagem que deseja encriptar: "))
