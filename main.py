@@ -67,7 +67,6 @@ while True:
         encryptedMessage = []
 
         for x in range(0, len(message)):
-            print(f'{characters.index(message[x]) + 2}')
             code = encrypt(characters.index(message[x]) + 2, e, n)
             encryptedMessage.append(str(code))
 
