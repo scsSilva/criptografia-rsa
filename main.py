@@ -19,14 +19,24 @@ def decrypt(c, d, n):
     result = (c ** d) % n
     return result
 
+def createFile(name, content):
+    file = open(f'{name}.txt', 'a')
+    file.write(f'{content}')
+    file.close()
+
+def updateContentFile(name, content):
+    file = open(f'{name}.txt', 'w')
+    file.write(f'{content}')
+    file.close()
+
 characters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ']
 
 while True:
-    option = int(input("Escolha uma opção abaixo:\n[1] - Gerar chave pública\n[2] - Encriptar mensagem\n[3] - Desencriptar mensagem\n[4] - Sair\n\nOPÇÃO: "))
+    option = int(input('Escolha uma opção abaixo:\n[1] - Gerar chave pública\n[2] - Encriptar mensagem\n[3] - Desencriptar mensagem\n[4] - Sair\n\nOPÇÃO: '))
 
     if option == 1:
-        p = int(input("Informe um número primo P: "))
-        q = int(input("Agora, informe outro número primo Q: "))
+        p = int(input('Informe um número primo P: '))
+        q = int(input('Agora, informe outro número primo Q: '))
 
         n = p * q
         phi = (p - 1) * (q - 1)
@@ -39,28 +49,24 @@ while True:
         
         for index in range(len(listPrimes)):
             if index == len(listPrimes) - 1:
-                print(f"{listPrimes[index]}")
+                print(f'{listPrimes[index]}')
             else:
-                print(f"{listPrimes[index]}", end=" - ")
+                print(f'{listPrimes[index]}', end=' - ')
 
-        e = int(input("Escolha um dos números acima: "))
+        e = int(input('Escolha um dos números acima: '))
 
         if (os.path.exists('key.txt')):
-            key = open("key.txt", "w")
-            key.write(f"N = {n}\nE = {e}")
-            key.close()
+            updateContentFile('key', f'N = {n}\nE = {e}')
         else:
-            key = open("key.txt", "a")
-            key.write(f"N = {n}\nE = {e}")
-            key.close()
+            createFile('key', f'N = {n}\nE = {e}')
 
-        print("Chave pública criada com sucesso. Para consultá-la, verifique o arquivo key.txt")
+        print('Chave pública criada com sucesso. Para consultá-la, verifique o arquivo key.txt')
 
     elif option == 2:
-        msg = str(input("Digite a mensagem que deseja encriptar: "))
-        print("\nAgora informe a chave pública gerada\n")
-        n = int(input("Chave N: "))
-        e = int(input("Chave E: "))
+        msg = str(input('Digite a mensagem que deseja encriptar: '))
+        print('\nAgora informe a chave pública gerada\n')
+        n = int(input('Chave N: '))
+        e = int(input('Chave E: '))
 
         message = msg.upper()
 
@@ -71,30 +77,26 @@ while True:
             encryptedMessage.append(str(code))
 
         if (os.path.exists('encrypted_message.txt')):
-            archiveMessage = open("encrypted_message.txt", "w")
-            archiveMessage.write(f"{encryptedMessage}")
-            archiveMessage.close()
+            updateContentFile('encrypted_message', encryptedMessage)
         else:
-            archiveMessage = open("encrypted_message.txt", "a")
-            archiveMessage.write(f"{encryptedMessage}")
-            archiveMessage.close()
+            createFile('encrypted_message', encryptedMessage)
 
-        print("Mensagem criptografada com sucesso. Verifique em encrypted_message.txt")
+        print('Mensagem criptografada com sucesso. Verifique em encrypted_message.txt')
 
     elif option == 3:
-        print("Informe os valores de P, Q e E\n")
-        p = int(input("Valor de P: "))
-        q = int(input("Valor de Q: "))
-        e = int(input("Valor de E: "))
+        print('Informe os valores de P, Q e E\n')
+        p = int(input('Valor de P: '))
+        q = int(input('Valor de Q: '))
+        e = int(input('Valor de E: '))
 
         phi = (p - 1) * (q - 1)
         private = modularInverse(e, phi)
 
-        message = open("encrypted_message.txt", "r")
+        message = open('encrypted_message.txt', 'r')
         encrypted = eval(message.readlines()[0])
         
         codes = []
-        original = ""
+        original = ''
 
         for x in range(0, len(encrypted)):
             code = decrypt(int(encrypted[x]), private, p * q)
@@ -105,16 +107,12 @@ while True:
             original += character
 
         if (os.path.exists('decrypted_message.txt')):
-            decryptedMessage = open('decrypted_message.txt', 'w')
-            decryptedMessage.write(original)
-            decryptedMessage.close()
+            updateContentFile('decrypted_message', original)
         else:
-            decryptedMessage = open('decrypted_message.txt', 'a')
-            decryptedMessage.write(original)
-            decryptedMessage.close()
+            createFile('decrypted_message', original)
 
-        print("Mensagem descriptografada com sucesso. Verifique a mensagem no arquivo decrypted_message.txt")
+        print('Mensagem descriptografada com sucesso. Verifique a mensagem no arquivo decrypted_message.txt')
     elif option == 4:
         break
     else:
-        print("Informe uma opção válida")
+        print('Informe uma opção válida')
