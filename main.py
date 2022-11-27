@@ -7,17 +7,13 @@ def mdc(n1, n2):
         return mdc(n2, n1 % n2)
 
 def modularInverse(a, m):
-    for x in range(1, m):
-        if ((a % m) * (x % m)) % m == 1:
-            return x
+    return pow(a, -1, m)
 
 def encrypt(m, e, n):
-    result = (m ** e) % n
-    return result
+    return pow(m, e, n)
 
 def decrypt(c, d, n):
-    result = (c ** d) % n
-    return result
+    return pow(c, d, n)
 
 def createFile(name, content):
     file = open(f'{name}.txt', 'a')
@@ -43,17 +39,10 @@ while True:
 
         listPrimes = []
 
-        for number in range(2, phi):
-            if mdc(phi, number) == 1:
-                listPrimes.append(number)
-        
-        for index in range(len(listPrimes)):
-            if index == len(listPrimes) - 1:
-                print(f'{listPrimes[index]}')
-            else:
-                print(f'{listPrimes[index]}', end=' - ')
+        e = int(input('Por fim, informe o valor de E: '))
 
-        e = int(input('Escolha um dos números acima: '))
+        while mdc(phi, e) != 1:
+            e = int(input('Escolha um dos números acima: '))    
 
         if (os.path.exists('key.txt')):
             updateContentFile('key', f'N = {n}\nE = {e}')
@@ -92,6 +81,8 @@ while True:
         phi = (p - 1) * (q - 1)
         private = modularInverse(e, phi)
 
+        n = p * q
+
         message = open('encrypted_message.txt', 'r')
         encrypted = message.readlines()[0].split()
         
@@ -99,11 +90,8 @@ while True:
         original = ''
 
         for x in range(0, len(encrypted)):
-            code = decrypt(int(encrypted[x]), private, p * q)
-            codes.append(code)
-
-        for x in range(0, len(codes)):
-            character = characters[codes[x] - 2]
+            code = decrypt(int(encrypted[x]), private, n)
+            character = characters[code - 2]
             original += character
 
         if (os.path.exists('decrypted_message.txt')):
