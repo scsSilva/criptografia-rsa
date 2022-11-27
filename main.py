@@ -70,11 +70,11 @@ while True:
 
         message = msg.upper()
 
-        encryptedMessage = []
+        encryptedMessage = ''
 
         for x in range(0, len(message)):
             code = encrypt(characters.index(message[x]) + 2, e, n)
-            encryptedMessage.append(str(code))
+            encryptedMessage += f'{str(code)} '
 
         if (os.path.exists('encrypted_message.txt')):
             updateContentFile('encrypted_message', encryptedMessage)
@@ -93,7 +93,7 @@ while True:
         private = modularInverse(e, phi)
 
         message = open('encrypted_message.txt', 'r')
-        encrypted = eval(message.readlines()[0])
+        encrypted = message.readlines()[0].split()
         
         codes = []
         original = ''
