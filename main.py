@@ -37,8 +37,6 @@ while True:
         n = p * q
         phi = (p - 1) * (q - 1)
 
-        listPrimes = []
-
         e = int(input('Por fim, informe o valor de E: '))
 
         while mdc(phi, e) != 1:
