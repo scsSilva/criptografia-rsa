@@ -84,7 +84,6 @@ while True:
         message = open('encrypted_message.txt', 'r')
         encrypted = message.readlines()[0].split()
         
-        codes = []
         original = ''
 
         for x in range(0, len(encrypted)):
