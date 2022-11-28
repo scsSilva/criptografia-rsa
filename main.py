@@ -40,7 +40,7 @@ while True:
         e = int(input('Por fim, informe o valor de E: '))
 
         while mdc(phi, e) != 1:
-            e = int(input('Escolha um dos números acima: '))    
+            e = int(input('Escolha outro valor para E: '))    
 
         if (os.path.exists('key.txt')):
             updateContentFile('key', f'N = {n}\nE = {e}')
