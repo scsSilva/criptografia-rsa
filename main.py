@@ -15,15 +15,15 @@ def encrypt(m, e, n):
 def decrypt(c, d, n):
     return pow(c, d, n)
 
-def createFile(name, content):
-    file = open(f'{name}.txt', 'a')
-    file.write(f'{content}')
-    file.close()
-
-def updateContentFile(name, content):
-    file = open(f'{name}.txt', 'w')
-    file.write(f'{content}')
-    file.close()
+def manipulateFile(name, content):
+    if (os.path.exists(f'{name}.txt')):
+        file = open(f'{name}.txt', 'w')
+        file.write(f'{content}')
+        file.close()
+    else:
+        file = open(f'{name}.txt', 'a')
+        file.write(f'{content}')
+        file.close()
 
 characters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ']
 
@@ -42,10 +42,7 @@ while True:
         while mdc(phi, e) != 1:
             e = int(input('Escolha outro valor para E: '))    
 
-        if (os.path.exists('key.txt')):
-            updateContentFile('key', f'N = {n}\nE = {e}')
-        else:
-            createFile('key', f'N = {n}\nE = {e}')
+        manipulateFile('key', f'N = {n}\nE = {e}')
 
         print('Chave pública criada com sucesso. Para consultá-la, verifique o arquivo key.txt')
 
@@ -63,10 +60,7 @@ while True:
             code = encrypt(characters.index(message[x]) + 2, e, n)
             encryptedMessage += f'{str(code)} '
 
-        if (os.path.exists('encrypted_message.txt')):
-            updateContentFile('encrypted_message', encryptedMessage)
-        else:
-            createFile('encrypted_message', encryptedMessage)
+        manipulateFile('encrypted_message', encryptedMessage)
 
         print('Mensagem criptografada com sucesso. Verifique em encrypted_message.txt')
 
@@ -91,10 +85,7 @@ while True:
             character = characters[code - 2]
             original += character
 
-        if (os.path.exists('decrypted_message.txt')):
-            updateContentFile('decrypted_message', original)
-        else:
-            createFile('decrypted_message', original)
+        manipulateFile('decrypted_message', original)
 
         print('Mensagem descriptografada com sucesso. Verifique a mensagem no arquivo decrypted_message.txt')
     elif option == 4:
