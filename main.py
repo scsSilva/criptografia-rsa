@@ -6,8 +6,12 @@ def mdc(n1, n2):
     else:
         return mdc(n2, n1 % n2)
 
-def modularInverse(a, m):
-    return pow(a, -1, m)
+def modularInverse(e, totiente):
+    res = 1
+
+    while (res % e > 0): res += totiente
+
+    return res // e
 
 def encrypt(m, e, n):
     return pow(m, e, n)
